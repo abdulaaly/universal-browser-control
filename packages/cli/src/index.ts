@@ -5,6 +5,7 @@ import ora from 'ora';
 import WebSocket from 'ws';
 import { runStdioServer, runSseServer } from '@universal-browser/mcp-server';
 import { runDiagnostics } from './doctor.js';
+import { createPublicTunnel } from './tunnel.js';
 
 const program = new Command();
 
@@ -18,6 +19,7 @@ program
   .command('start')
   .description('Start the Universal MCP server bridge')
   .option('--sse', 'Run in SSE / HTTP streaming mode for remote AI clients', false)
+  .option('--tunnel', 'Establish a free public HTTPS tunnel for remote/mobile AI access (ChatGPT App, Claude Web)', false)
   .option('--port <number>', 'Port for SSE server', '3000')
   .option('--ws-port <number>', 'Port for local extension WebSocket server', '8765')
   .action(async (options) => {
@@ -27,13 +29,32 @@ program
     console.log(chalk.bold.green('\n🚀 Starting Universal AI Browser Control Bridge...'));
     console.log(chalk.cyan(`• Extension WebSocket Target: ws://127.0.0.1:${wsPort}`));
 
-    if (options.sse) {
+    if (options.sse || options.tunnel) {
       console.log(chalk.cyan(`• Mode: Remote SSE Stream on port ${ssePort}`));
       await runSseServer({ port: ssePort, wsUrl: `ws://127.0.0.1:${wsPort}` });
+
+      if (options.tunnel) {
+        try {
+          await createPublicTunnel(ssePort);
+        } catch (err: any) {
+          console.warn(chalk.yellow(`Could not auto-start public tunnel: ${err.message}`));
+        }
+      }
     } else {
       console.log(chalk.cyan(`• Mode: Local stdio transport for local AI agents`));
       await runStdioServer({ wsUrl: `ws://127.0.0.1:${wsPort}` });
     }
+  });
+
+// Command: tunnel
+program
+  .command('tunnel')
+  .description('Create a public HTTPS tunnel for remote mobile access (e.g. ChatGPT mobile, Claude Web)')
+  .option('--port <number>', 'Local port to tunnel', '3000')
+  .option('--subdomain <string>', 'Optional custom subdomain')
+  .action(async (options) => {
+    const port = parseInt(options.port, 10);
+    await createPublicTunnel(port, options.subdomain);
   });
 
 // Command: status
@@ -55,7 +76,7 @@ program
       ws.on('open', () => {
         clearTimeout(timeout);
         spinner.succeed(chalk.green(`Extension bridge is ONLINE at ${options.wsUrl}!`));
-        console.log(chalk.white('• Ready to accept commands from Gemini, Claude, Perplexity, Cursor, and Antigravity.'));
+        console.log(chalk.white('• Ready to accept commands from any local or remote AI client.'));
         ws.close();
         process.exit(0);
       });
@@ -87,26 +108,15 @@ program
   .argument('[action]', 'Action to perform: generate, list, revoke', 'generate')
   .action((action) => {
     if (action === 'generate') {
-      const rawToken = 'ub_pat_' + Buffer.from(Math.random().toString(36) + Date.now()).toString('base64url');
+      const rawToken = 'ub_pat_live_' + Array.from(crypto.getRandomValues(new Uint8Array(12)))
+        .map(b => b.toString(16).padStart(2, '0')).join('');
       console.log(chalk.bold.green('\n🔑 Generated Scoped Personal Access Token:'));
       console.log(chalk.bold.yellow(`\n  ${rawToken}\n`));
       console.log(chalk.white('Scopes: [tabs:read, tabs:write, dom:read, input:write, screenshot:read]'));
-      console.log(chalk.gray('Use this Bearer token in remote AI client MCP headers (Claude iOS/Android, Gemini Web).\n'));
+      console.log(chalk.gray('Use this Bearer token in remote AI client MCP headers (ChatGPT App, Claude Web, Gemini).\n'));
     } else {
       console.log(chalk.cyan(`Token action '${action}' completed.`));
     }
-  });
-
-// Command: login
-program
-  .command('login')
-  .description('Authenticate with Firebase Backend & 2FA for remote cloud relay')
-  .action(() => {
-    console.log(chalk.bold.cyan('\n🔐 Firebase Authentication & 2FA Setup'));
-    console.log(chalk.white('To pair your browser extension with remote cloud AI clients:'));
-    console.log(chalk.green('1. Open Chrome Side Panel in the Universal AI Browser Control extension'));
-    console.log(chalk.green('2. Click "Sign in with Firebase / 2FA"'));
-    console.log(chalk.green('3. Copy your unique Cloud Relay URL and Bearer token into your remote AI client.\n'));
   });
 
 program.parse(process.argv);
