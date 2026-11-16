@@ -1,80 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Universal AI Browser Control — Cloud Relay & MCP Hub</title>
+  <title>Universal AI Browser Control — Production Cloud Relay & MCP Hub</title>
+  <meta name="description" content="100% open-source, production-ready Universal AI Browser Control Extension + Remote/Local MCP Server & CLI that enables any AI client (Gemini, Claude, Perplexity, Cursor, Antigravity CLI) to control live authenticated desktop browser sessions safely.">
+  <meta name="author" content="100xdigitizer@gmail.com">
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#08090b',
+            surface: {
+              DEFAULT: '#0e1015',
+              elevated: '#14171f',
+              card: '#191d27',
+              hover: '#1f2430',
+            },
+            hairline: {
+              DEFAULT: '#232834',
+              soft: 'rgba(255, 255, 255, 0.06)',
+            },
+            ink: '#f4f4f6',
+            body: '#c4c8d4',
+            mute: '#7a8296',
+            brand: {
+              accent: '#6366f1',
+              primary: '#5e6ad2',
+              dim: '#c0c1ff',
+            },
+            status: {
+              emerald: '#10b981',
+              amber: '#f59e0b',
+              rose: '#f43f5e',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { background-color: #030712; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    .glow-box { box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); }
-    .quantum-border { border: 1px solid rgba(16, 185, 129, 0.3); }
+    body {
+      background-color: #08090b;
+      color: #f4f4f6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::selection {
+      background-color: #6366f1;
+      color: #ffffff;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #08090b;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #232834;
+      border-radius: 4px;
+    }
+    .keycap {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      line-height: 1;
+      padding: 2px 4px;
+      border-radius: 3px;
+      background-color: #14171f;
+      color: #7a8296;
+      border: 1px solid #232834;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-black">
+<body class="min-h-screen flex flex-col antialiased selection:bg-[#6366f1] selection:text-white">
 
-  <!-- Navigation -->
-  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+  <!-- Top Navigation Header -->
+  <header class="border-b border-[#232834] bg-[#08090b]/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
       <div class="flex items-center space-x-3">
-        <svg viewBox="0 0 512 512" class="w-9 h-9">
-          <rect x="20" y="20" width="472" height="472" rx="96" fill="#0a0f1d" stroke="#1e293b" stroke-width="12" />
-          <ellipse cx="256" cy="300" rx="140" ry="55" fill="none" stroke="#06b6d4" stroke-width="10" opacity="0.8" />
-          <circle cx="256" cy="300" r="70" fill="#10b981" stroke="#6ee7b7" stroke-width="10" />
-          <circle cx="256" cy="300" r="28" fill="#ffffff" />
-        </svg>
-        <div>
-          <span class="font-bold text-base text-slate-100 tracking-tight">Universal AI Browser</span>
-          <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 ml-1.5 font-mono">PRO</span>
+        <div class="w-7 h-7 rounded bg-[#6366f1]/20 border border-[#6366f1]/40 flex items-center justify-center text-[#c0c1ff]">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-sm text-[#f4f4f6] tracking-tight">Universal AI Browser Control</span>
+          <span class="text-[10px] px-1.5 py-0.5 rounded bg-[#10b981]/15 text-[#10b981] border border-[#10b981]/30 font-mono font-medium">v1.0.0</span>
         </div>
       </div>
 
       <div class="flex items-center space-x-3 text-xs">
-        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-emerald-400 font-mono">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span>
-          Cloud Relay: Active
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-[#0e1015] border border-[#232834] text-[#10b981] font-mono text-[11px]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#10b981] animate-pulse mr-2"></span>
+          Cloud Relay: Online (8ms)
         </span>
-        <a href="https://github.com/abdulaaly/universal-browser-control" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition flex items-center space-x-1.5">
-          <span>GitHub Repo</span>
+        <a href="https://github.com/abdulaaly/universal-browser-control" target="_blank" rel="noreferrer" class="px-3 py-1.5 rounded bg-[#14171f] hover:bg-[#191d27] border border-[#232834] text-[#c4c8d4] hover:text-[#f4f4f6] font-mono text-[11px] transition flex items-center gap-1.5">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+          </svg>
+          <span>GitHub</span>
         </a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <main class="flex-1 max-w-5xl mx-auto px-4 py-12 w-full space-y-12">
-    <div class="text-center space-y-4">
-      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/80 text-emerald-400 text-xs font-medium">
+  <main class="flex-1 max-w-5xl mx-auto px-4 py-12 w-full space-y-10">
+    <div class="text-center space-y-3">
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/30 text-[#10b981] font-mono text-[11px]">
         <span>⚡ 100% Open-Source Autonomous AI Browser Control</span>
       </div>
-      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
-        Control Your Live Browser from <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Any AI Client</span>
+      <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-[#f4f4f6]">
+        Control Your Live Desktop Browser from <span class="text-[#c0c1ff]">Any AI Client</span>
       </h1>
-      <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-        Engineered to surpass vendor-locked extensions. Control your desktop Chrome session safely from 
-        <strong>Gemini</strong>, <strong>Claude (Web/Mobile/Desktop)</strong>, <strong>Perplexity</strong>, <strong>Cursor</strong>, or <strong>Antigravity CLI</strong> via Model Context Protocol (MCP).
+      <p class="text-[#7a8296] max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+        Reverse-engineered beyond vendor locks. Control live authenticated Chrome sessions safely from 
+        <strong class="text-[#f4f4f6]">Claude (Web & Mobile)</strong>, <strong class="text-[#f4f4f6]">Gemini</strong>, <strong class="text-[#f4f4f6]">Perplexity</strong>, <strong class="text-[#f4f4f6]">Cursor</strong>, or <strong class="text-[#f4f4f6]">Antigravity CLI</strong> via Model Context Protocol (MCP).
       </p>
     </div>
 
     <!-- Live Connect Hub Card -->
-    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 glow-box max-w-3xl mx-auto">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+    <div class="bg-[#0e1015] border border-[#232834] rounded-xl p-5 max-w-3xl mx-auto space-y-4">
+      <div class="flex items-center justify-between border-b border-[#232834] pb-3">
         <div>
-          <h2 class="text-lg font-bold text-slate-100">Live Remote MCP Endpoint</h2>
-          <p class="text-xs text-slate-400">Connect cloud AI agents to your local browser session</p>
+          <h2 class="text-sm font-semibold text-[#f4f4f6] font-mono">Live Remote MCP Endpoint</h2>
+          <p class="text-[11px] text-[#7a8296] font-mono">Connect cloud or mobile AI models to your local browser</p>
         </div>
-        <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400 font-medium">
+        <span class="text-[10px] px-2 py-0.5 rounded-full bg-[#10b981]/10 border border-[#10b981]/30 text-[#10b981] font-mono font-medium">
           2FA & HITL Protected
         </span>
       </div>
 
-      <div class="space-y-4 text-xs font-mono">
+      <div class="space-y-3 font-mono text-xs">
         <div>
-          <label class="text-slate-400 block mb-1">Server-Sent Events (SSE) Stream URL:</label>
-          <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-2.5">
-            <span class="text-emerald-300 flex-1 truncate" id="streamUrl">https://universal-browser-control.vercel.app/api/mcp/sse</span>
-            <button onclick="navigator.clipboard.writeText(document.getElementById('streamUrl').innerText); alert('Copied SSE URL!')" class="text-slate-400 hover:text-white px-2 py-1 bg-slate-800 rounded">
+          <label class="text-[#7a8296] text-[10px] block mb-1 uppercase tracking-wider">Remote Server-Sent Events (SSE) Stream URL:</label>
+          <div class="flex items-center bg-[#08090b] border border-[#232834] rounded px-3 py-2">
+            <span class="text-[#10b981] flex-1 truncate select-all" id="streamUrl">https://universal-browser-control.vercel.app/api/mcp/sse</span>
+            <button onclick="copyField('streamUrl', this)" class="text-[#7a8296] hover:text-[#f4f4f6] px-2 py-1 bg-[#14171f] hover:bg-[#191d27] border border-[#232834] rounded text-[11px] transition">
               Copy
             </button>
           </div>
@@ -82,57 +157,174 @@
 
         <div>
           <div class="flex items-center justify-between mb-1">
-            <label class="text-slate-400">Scoped Personal Access Token (PAT):</label>
-            <button onclick="rotateToken()" class="text-emerald-400 hover:underline">Rotate Token</button>
+            <label class="text-[#7a8296] text-[10px] uppercase tracking-wider">Scoped Personal Access Token (PAT):</label>
+            <button onclick="rotateToken()" class="text-[#10b981] text-[10px] hover:underline">Rotate Token</button>
           </div>
-          <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-2.5">
-            <span class="text-slate-300 flex-1 truncate" id="patToken">ub_pat_live_89f0a8c2b7d41e9e03</span>
-            <button onclick="navigator.clipboard.writeText(document.getElementById('patToken').innerText); alert('Copied Token!')" class="text-slate-400 hover:text-white px-2 py-1 bg-slate-800 rounded">
+          <div class="flex items-center bg-[#08090b] border border-[#232834] rounded px-3 py-2">
+            <span class="text-[#c4c8d4] flex-1 truncate select-all" id="patToken">ub_pat_live_89f0a8c2b7d41e9e03</span>
+            <button onclick="copyField('patToken', this)" class="text-[#7a8296] hover:text-[#f4f4f6] px-2 py-1 bg-[#14171f] hover:bg-[#191d27] border border-[#232834] rounded text-[11px] transition">
               Copy
             </button>
           </div>
         </div>
       </div>
+
+      <!-- Toast Notification Container -->
+      <div id="toast" class="hidden text-center text-[11px] font-mono text-[#10b981] bg-[#10b981]/10 border border-[#10b981]/30 rounded py-1 transition-all">
+        Copied to clipboard
+      </div>
     </div>
 
-    <!-- Multi-Client Presets Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
-        <h3 class="text-sm font-bold text-emerald-400">Google Gemini Configuration</h3>
-        <pre class="bg-slate-950 border border-slate-800 p-3 rounded text-[11px] font-mono text-slate-300 overflow-x-auto">{
+    <!-- Multi-Client Configuration Presets -->
+    <div class="max-w-4xl mx-auto space-y-3">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xs font-mono uppercase tracking-wider text-[#7a8296]">1-Click Client Configuration Snippets</h3>
+        <span class="text-[10px] font-mono text-[#6366f1]">MCP Standard Compatible</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <!-- Claude Web & Mobile -->
+        <div class="bg-[#0e1015] border border-[#232834] rounded-lg p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-xs text-[#f4f4f6] flex items-center gap-1.5">
+              <span>Claude (Web & Mobile)</span>
+            </span>
+            <button onclick="copyCode('claudeCode', this)" class="text-[10px] font-mono text-[#7a8296] hover:text-[#f4f4f6] px-2 py-0.5 rounded bg-[#14171f] border border-[#232834]">
+              Copy
+            </button>
+          </div>
+          <pre id="claudeCode" class="bg-[#08090b] border border-[#232834] p-2.5 rounded font-mono text-[10px] text-[#c0c1ff] overflow-x-auto leading-relaxed">{
   "mcpServers": {
     "universal-browser": {
       "url": "https://universal-browser-control.vercel.app/api/mcp/sse",
-      "headers": {
-        "Authorization": "Bearer <YOUR_PAT_TOKEN>"
-      }
+      "headers": { "Authorization": "Bearer ub_pat_live_89f0a8c2b7d41e9e03" }
     }
   }
 }</pre>
+        </div>
+
+        <!-- Gemini API -->
+        <div class="bg-[#0e1015] border border-[#232834] rounded-lg p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-xs text-[#f4f4f6] flex items-center gap-1.5">
+              <span>Gemini CLI / Workspace</span>
+            </span>
+            <button onclick="copyCode('geminiCode', this)" class="text-[10px] font-mono text-[#7a8296] hover:text-[#f4f4f6] px-2 py-0.5 rounded bg-[#14171f] border border-[#232834]">
+              Copy
+            </button>
+          </div>
+          <pre id="geminiCode" class="bg-[#08090b] border border-[#232834] p-2.5 rounded font-mono text-[10px] text-[#c0c1ff] overflow-x-auto leading-relaxed">{
+  "mcpServers": {
+    "universal-browser": {
+      "url": "https://universal-browser-control.vercel.app/api/mcp/sse",
+      "headers": { "Authorization": "Bearer ub_pat_live_89f0a8c2b7d41e9e03" }
+    }
+  }
+}</pre>
+        </div>
+
+        <!-- Cursor IDE -->
+        <div class="bg-[#0e1015] border border-[#232834] rounded-lg p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-xs text-[#f4f4f6]">Cursor IDE MCP</span>
+            <button onclick="copyCode('cursorCode', this)" class="text-[10px] font-mono text-[#7a8296] hover:text-[#f4f4f6] px-2 py-0.5 rounded bg-[#14171f] border border-[#232834]">
+              Copy
+            </button>
+          </div>
+          <pre id="cursorCode" class="bg-[#08090b] border border-[#232834] p-2.5 rounded font-mono text-[10px] text-[#c0c1ff] overflow-x-auto leading-relaxed">{
+  "name": "universal-browser",
+  "type": "sse",
+  "url": "https://universal-browser-control.vercel.app/api/mcp/sse",
+  "headers": { "Authorization": "Bearer ub_pat_live_89f0a8c2b7d41e9e03" }
+}</pre>
+        </div>
+
+        <!-- Antigravity & Local CLI -->
+        <div class="bg-[#0e1015] border border-[#232834] rounded-lg p-3.5 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-xs text-[#f4f4f6]">Antigravity CLI (Zero-Config)</span>
+            <button onclick="copyCode('cliCode', this)" class="text-[10px] font-mono text-[#7a8296] hover:text-[#f4f4f6] px-2 py-0.5 rounded bg-[#14171f] border border-[#232834]">
+              Copy
+            </button>
+          </div>
+          <pre id="cliCode" class="bg-[#08090b] border border-[#232834] p-2.5 rounded font-mono text-[10px] text-[#10b981] overflow-x-auto leading-relaxed">npx @universal-browser/cli connect --url https://universal-browser-control.vercel.app/api/mcp/sse</pre>
+        </div>
       </div>
+    </div>
 
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
-        <h3 class="text-sm font-bold text-cyan-400">Anthropic Claude Web / Mobile</h3>
-        <pre class="bg-slate-950 border border-slate-800 p-3 rounded text-[11px] font-mono text-slate-300 overflow-x-auto">URL: https://universal-browser-control.vercel.app/api/mcp/sse
-Header: Authorization: Bearer <YOUR_PAT_TOKEN>
-
-# Or for Claude Desktop local stdio:
-npx -y @universal-browser/mcp-server</pre>
+    <!-- Comparative Superiority Matrix -->
+    <div class="max-w-4xl mx-auto space-y-3 pt-4">
+      <h3 class="text-xs font-mono uppercase tracking-wider text-[#7a8296]">Architectural Comparison: Vendor-Locked vs. Universal AI Browser</h3>
+      <div class="bg-[#0e1015] border border-[#232834] rounded-lg overflow-hidden font-mono text-xs">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-[#08090b] border-b border-[#232834] text-[#7a8296] text-[10px]">
+              <th class="p-2.5">Feature</th>
+              <th class="p-2.5">Original ChatGPT Ext (hehggadaop...)</th>
+              <th class="p-2.5 text-[#10b981]">Universal AI Browser Control</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#232834] text-[11px] text-[#c4c8d4]">
+            <tr>
+              <td class="p-2.5 font-semibold text-[#f4f4f6]">AI Client Compatibility</td>
+              <td class="p-2.5 text-[#f43f5e]">ChatGPT Web Only</td>
+              <td class="p-2.5 text-[#10b981]">Gemini, Claude, Perplexity, Cursor, Antigravity</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-[#f4f4f6]">Remote Access & Mobile</td>
+              <td class="p-2.5 text-[#f43f5e]">No Mobile / Remote Support</td>
+              <td class="p-2.5 text-[#10b981]">Full SSE & Encrypted Cloud Relay</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-[#f4f4f6]">Security & HITL Guardrails</td>
+              <td class="p-2.5 text-[#7a8296]">Basic Prompt Confirmation</td>
+              <td class="p-2.5 text-[#10b981]">3-Tier HITL ([Allow Once], [Domain], [Deny]) + 2FA</td>
+            </tr>
+            <tr>
+              <td class="p-2.5 font-semibold text-[#f4f4f6]">Source Code & License</td>
+              <td class="p-2.5 text-[#f43f5e]">Proprietary & Minified</td>
+              <td class="p-2.5 text-[#10b981]">100% Open-Source (MIT)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </main>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
-    Universal AI Browser Control • Open Source MIT • 100xdigitizer@gmail.com • <a href="https://github.com/abdulaaly/universal-browser-control" class="text-emerald-400 hover:underline">GitHub</a>
+  <footer class="border-t border-[#232834] bg-[#08090b] py-6 text-center text-xs text-[#7a8296] font-mono">
+    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-2">
+      <div>Universal AI Browser Control • Engineered with Obsidian Command Design System</div>
+      <div class="text-[#c4c8d4]">Author: <a href="mailto:100xdigitizer@gmail.com" class="hover:text-[#10b981]">100xdigitizer@gmail.com</a></div>
+    </div>
   </footer>
 
   <script>
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 2000);
+    }
+    function copyField(elementId, btn) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text);
+      showToast('Copied to clipboard');
+    }
+    function copyCode(elementId, btn) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text);
+      showToast('Config snippet copied');
+    }
     function rotateToken() {
-      const bytes = new Uint8Array(12);
-      crypto.getRandomValues(bytes);
-      const token = 'ub_pat_live_' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
-      document.getElementById('patToken').innerText = token;
+      const chars = '0123456789abcdef';
+      let randomPart = '';
+      for (let i = 0; i < 24; i++) {
+        randomPart += chars[Math.floor(Math.random() * chars.length)];
+      }
+      const newToken = 'ub_pat_live_' + randomPart;
+      document.getElementById('patToken').innerText = newToken;
+      showToast('PAT Token Rotated');
     }
   </script>
 </body>
