@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MCP Browser Bridge - Universal AI Browser Control</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#1000a9",
+            "on-secondary": "#003824",
+            "surface-container-high": "#292a2c",
+            "surface-bright": "#38393b",
+            "on-error-container": "#ffdad6",
+            "outline": "#908fa0",
+            "on-tertiary-fixed-variant": "#653e00",
+            "tertiary-fixed": "#ffddb8",
+            "on-surface": "#e3e2e5",
+            "surface-container": "#1f2022",
+            "inverse-primary": "#494bd6",
+            "background": "#121315",
+            "on-error": "#690005",
+            "on-tertiary-fixed": "#2a1700",
+            "surface-variant": "#343537",
+            "surface-tint": "#c0c1ff",
+            "on-background": "#e3e2e5",
+            "on-secondary-fixed": "#002113",
+            "secondary": "#4edea3",
+            "primary-fixed": "#e1e0ff",
+            "inverse-on-surface": "#303033",
+            "surface-dim": "#121315",
+            "error-container": "#93000a",
+            "tertiary-fixed-dim": "#ffb95f",
+            "surface-container-low": "#1b1c1e",
+            "on-tertiary": "#472a00",
+            "primary-container": "#8083ff",
+            "tertiary": "#ffb95f",
+            "secondary-container": "#00a572",
+            "surface-container-highest": "#343537",
+            "on-surface-variant": "#c7c4d7",
+            "tertiary-container": "#ca8100",
+            "on-tertiary-container": "#3e2400",
+            "on-primary-fixed": "#07006c",
+            "on-secondary-fixed-variant": "#005236",
+            "inverse-surface": "#e3e2e5",
+            "error": "#ffb4ab",
+            "outline-variant": "#464554",
+            "surface-container-lowest": "#0d0e10",
+            "primary-fixed-dim": "#c0c1ff",
+            "primary": "#c0c1ff",
+            "secondary-fixed": "#6ffbbe",
+            "on-secondary-container": "#00311f",
+            "on-primary-container": "#0d0096",
+            "surface": "#121315",
+            "on-primary-fixed-variant": "#2f2ebe",
+            "secondary-fixed-dim": "#4edea3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter-desktop": "1rem",
+            "space-md": "0.75rem",
+            "margin-desktop": "1.25rem",
+            "margin": "0.75rem",
+            "space-lg": "1rem",
+            "gutter": "0.75rem",
+            "space-sm": "0.375rem"
+          },
+          "fontFamily": {
+            "code-lg": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "body-lg": ["Inter"],
+            "label-mono": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "code-md": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "code-lg": ["0.875rem", { "lineHeight": "1.375rem", "fontWeight": "500" }],
+            "headline-sm": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+            "body-sm": ["0.75rem", { "lineHeight": "1.125rem", "fontWeight": "400" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "headline-md": ["1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "code-sm": ["0.6875rem", { "lineHeight": "1rem", "fontWeight": "400" }],
+            "body-lg": ["0.9375rem", { "lineHeight": "1.5rem", "letterSpacing": "-0.005em", "fontWeight": "400" }],
+            "label-mono": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-md": ["0.875rem", { "lineHeight": "1.375rem", "fontWeight": "400" }],
+            "code-md": ["0.8125rem", { "lineHeight": "1.25rem", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-size: 16px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    /* Custom scrollbars for compact high-density layout */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0d0e10;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #464554;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #908fa0;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface antialiased flex justify-center min-h-screen overflow-x-hidden selection:bg-primary selection:text-on-primary">
+<!-- Main Shell Container (Docked Chrome Extension Sidepanel layout: ~400px width with micro-rhythm) -->
+<div class="w-full max-w-[420px] min-h-screen bg-surface flex flex-col border-x border-outline-variant shadow-2xl relative pb-8">
+<!-- 1. Shared Component: TopNavBar -->
+<header class="bg-surface text-primary border-b border-outline-variant flex justify-between items-center px-space-md py-space-xs w-full h-10 select-none sticky top-0 z-30">
+<div class="flex items-center gap-space-sm">
+<span class="font-code-lg text-code-lg font-bold text-on-surface tracking-tight flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary" data-icon="tab">tab</span>
+          MCP Browser Bridge
+        </span>
+<div class="flex items-center gap-1 bg-surface-container-high px-1.5 py-0.5 rounded border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-mono text-label-mono text-secondary">8ms · TUNNEL</span>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<button class="text-on-surface-variant hover:bg-surface-container hover:text-on-surface p-1 rounded transition-colors duration-150 active:scale-95 flex items-center justify-center" title="Refresh State">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container hover:text-on-surface p-1 rounded transition-colors duration-150 active:scale-95 flex items-center justify-center" title="Terminal Shell">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container hover:text-on-surface p-1 rounded transition-colors duration-150 active:scale-95 flex items-center justify-center" title="Bridge Settings">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Sub-header rail: SideNavBar horizontal mini-tab view representing active ecosystem -->
+<nav class="bg-surface-container-low border-b border-outline-variant px-space-xs py-1 flex items-center justify-between gap-1 overflow-x-auto text-on-surface-variant text-label-md">
+<!-- Active Item: Agent Stream -->
+<a class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface px-1.5 py-1 rounded transition-colors duration-150 whitespace-nowrap" href="#inspector">
+<span class="material-symbols-outlined text-[14px]" data-icon="tab">tab</span>
+<span class="font-code-sm text-code-sm">Inspector</span>
+</a>
+<a class="flex items-center gap-1 bg-surface-container-high text-primary border-l-2 border-primary px-1.5 py-1 rounded transition-colors duration-150 whitespace-nowrap" href="#agent-stream">
+<span class="material-symbols-outlined text-[14px]" data-icon="smart_toy">smart_toy</span>
+<span class="font-code-sm text-code-sm">Agent Stream</span>
+</a>
+<a class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface px-1.5 py-1 rounded transition-colors duration-150 whitespace-nowrap" href="#dom-actions">
+<span class="material-symbols-outlined text-[14px]" data-icon="code">code</span>
+<span class="font-code-sm text-code-sm">DOM Actions</span>
+</a>
+<a class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface px-1.5 py-1 rounded transition-colors duration-150 whitespace-nowrap" href="#hitl">
+<span class="material-symbols-outlined text-[14px]" data-icon="shield">shield</span>
+<span class="font-code-sm text-code-sm">Security HITL</span>
+</a>
+<a class="flex items-center gap-1 text-on-surface-variant hover:text-on-surface px-1.5 py-1 rounded transition-colors duration-150 whitespace-nowrap" href="#logs">
+<span class="material-symbols-outlined text-[14px]" data-icon="receipt_long">receipt_long</span>
+<span class="font-code-sm text-code-sm">Protocol Logs</span>
+</a>
+</nav>
+<!-- Sidepanel Scrollable Body -->
+<main class="flex-1 px-space-md py-space-sm space-y-space-md overflow-y-auto">
+<!-- Active Tab Context Card -->
+<section class="bg-surface-container border border-outline-variant rounded-lg p-space-sm space-y-space-xs">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-6 h-6 rounded bg-surface-container-high border border-outline-variant flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[14px]" data-icon="globe">public</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-1.5 leading-tight">
+                Universal AI Browser Control
+              </div>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="font-code-sm text-code-sm text-on-surface-variant">localhost:5173</span>
+<span class="text-outline-variant text-[10px]">•</span>
+<span class="font-label-mono text-label-mono text-secondary bg-surface-container-high px-1 rounded border border-outline-variant">
+                  28 nodes indexed
+                </span>
+</div>
+</div>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary ring-2 ring-secondary/20 mt-1"></span>
+</div>
+<!-- 4 Quick-Action Buttons in compact 2x2 grid -->
+<div class="grid grid-cols-2 gap-1.5 pt-1">
+<button class="flex items-center justify-center gap-1.5 h-7 px-2 bg-surface-container-low border border-outline-variant hover:border-outline hover:bg-surface-container-high text-on-surface rounded text-code-sm font-code-sm transition-colors duration-150">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="account_tree">account_tree</span>
+            Index DOM
+          </button>
+<button class="flex items-center justify-center gap-1.5 h-7 px-2 bg-surface-container-low border border-outline-variant hover:border-outline hover:bg-surface-container-high text-on-surface rounded text-code-sm font-code-sm transition-colors duration-150">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="screenshot_region">screenshot_region</span>
+            Capture Viewport
+          </button>
+<button class="flex items-center justify-center gap-1.5 h-7 px-2 bg-surface-container-low border border-outline-variant hover:border-outline hover:bg-surface-container-high text-on-surface rounded text-code-sm font-code-sm transition-colors duration-150">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="markdown">markdown</span>
+            Extract Markdown
+          </button>
+<button class="flex items-center justify-center gap-1.5 h-7 px-2 bg-surface-container-low border border-outline-variant hover:border-outline hover:bg-surface-container-high text-on-surface rounded text-code-sm font-code-sm transition-colors duration-150">
+<span class="material-symbols-outlined text-[13px] text-secondary" data-icon="near_me">near_me</span>
+            Agent Pointer
+          </button>
+</div>
+</section>
+<!-- AI Action Input Bar (Raycast command pattern) -->
+<section class="bg-surface-container border border-outline-variant rounded-lg p-space-sm space-y-space-xs">
+<div class="relative flex items-center">
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-0 text-on-surface text-code-sm font-code-sm rounded pl-2.5 pr-16 py-2 transition-colors placeholder:text-outline" placeholder="Instruct AI agent to perform any browser action..." type="text"/>
+<div class="absolute right-1.5 flex items-center gap-1">
+<span class="bg-surface-container-high text-on-surface-variant font-code-sm text-[10px] px-1 py-0.5 rounded border border-outline-variant">⌘⏎</span>
+<button class="w-6 h-6 rounded bg-primary text-on-primary flex items-center justify-center hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Suggestion Chips -->
+<div class="flex items-center gap-1.5 overflow-x-auto pt-0.5 no-scrollbar text-label-md">
+<button class="bg-surface-container-low border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface px-2 py-0.5 rounded-full font-code-sm text-[10px] whitespace-nowrap transition-colors">
+            Summarize page
+          </button>
+<button class="bg-surface-container-low border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface px-2 py-0.5 rounded-full font-code-sm text-[10px] whitespace-nowrap transition-colors">
+            Extract all links
+          </button>
+<button class="bg-surface-container-low border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface px-2 py-0.5 rounded-full font-code-sm text-[10px] whitespace-nowrap transition-colors">
+            Click main CTA
+          </button>
+<button class="bg-surface-container-low border border-outline-variant hover:border-outline text-on-surface-variant hover:text-on-surface px-2 py-0.5 rounded-full font-code-sm text-[10px] whitespace-nowrap transition-colors">
+            Scroll to footer
+          </button>
+</div>
+</section>
+<!-- Real-time Agent Activity Stream (Timeline) -->
+<section class="space-y-space-xs">
+<div class="flex items-center justify-between px-0.5">
+<div class="flex items-center gap-1.5">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-wider">AGENT ACTIVITY STREAM</span>
+</div>
+<div class="flex items-center gap-1 bg-surface-container-high px-1.5 py-0.5 rounded border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-ping"></span>
+<span class="font-label-mono text-label-mono text-primary">STREAMING</span>
+</div>
+</div>
+<!-- Timeline Container -->
+<div class="space-y-1.5 border-l border-outline-variant ml-2 pl-2">
+<!-- Event 1: Click element -->
+<div class="bg-surface-container border border-outline-variant rounded p-space-xs relative group hover:border-outline transition-colors">
+<span class="absolute -left-[13px] top-2.5 w-2 h-2 rounded-full bg-outline-variant group-hover:bg-primary transition-colors"></span>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<!-- Cursor-style Exec tag -->
+<span class="px-1.5 py-0.2 rounded-full font-code-sm text-[9px] font-semibold tracking-wider uppercase bg-surface-container-highest text-primary border border-outline-variant">
+                  Exec
+                </span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">click_element</span>
+<span class="font-code-sm text-[10px] text-primary">#checkout-button</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-mono text-label-mono text-secondary">COMPLETED</span>
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-1 text-on-surface-variant font-code-sm text-[10px]">
+<span>14:23:08.120</span>
+<span class="text-outline">12ms latency</span>
+</div>
+</div>
+<!-- Event 2: get_dom_tree -->
+<div class="bg-surface-container border border-outline-variant rounded p-space-xs relative group hover:border-outline transition-colors">
+<span class="absolute -left-[13px] top-2.5 w-2 h-2 rounded-full bg-outline-variant group-hover:bg-secondary transition-colors"></span>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<!-- Cursor-style Index tag -->
+<span class="px-1.5 py-0.2 rounded-full font-code-sm text-[9px] font-semibold tracking-wider uppercase bg-surface-container-highest text-secondary border border-outline-variant">
+                  Index
+                </span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">get_dom_tree</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant">28 interactive nodes</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-mono text-label-mono text-secondary">COMPLETED</span>
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-1 text-on-surface-variant font-code-sm text-[10px]">
+<span>14:23:07.890</span>
+<span class="text-outline">34ms latency</span>
+</div>
+</div>
+<!-- Event 3: type_text -->
+<div class="bg-surface-container border border-outline-variant rounded p-space-xs relative group hover:border-outline transition-colors">
+<span class="absolute -left-[13px] top-2.5 w-2 h-2 rounded-full bg-outline-variant group-hover:bg-tertiary transition-colors"></span>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<!-- Cursor-style Read & Exec tags -->
+<span class="px-1.5 py-0.2 rounded-full font-code-sm text-[9px] font-semibold tracking-wider uppercase bg-surface-container-highest text-primary border border-outline-variant">
+                  Read
+                </span>
+<span class="font-code-sm text-code-sm font-semibold text-on-surface">type_text</span>
+<span class="font-code-sm text-[10px] text-on-surface-variant truncate max-w-[120px]">"macbook pro m3"</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="font-label-mono text-label-mono text-secondary">COMPLETED</span>
+<span class="material-symbols-outlined text-[12px] text-on-surface-variant" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-1 text-on-surface-variant font-code-sm text-[10px]">
+<span>14:23:06.415</span>
+<span class="text-outline">18ms latency</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. Human-In-The-Loop (HITL) Guardrail Card -->
+<section class="bg-surface-container-low border border-tertiary-container/60 rounded-lg p-space-sm space-y-space-xs relative overflow-hidden" id="hitl">
+<div class="absolute -right-6 -bottom-6 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[90px] text-tertiary" data-icon="shield">shield</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded bg-tertiary-container/30 border border-tertiary flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[13px]" data-icon="shield">shield</span>
+</div>
+<span class="font-label-mono text-label-mono text-tertiary font-bold tracking-wider">
+            SECURITY GUARDRAIL INTERRUPT
+          </span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface leading-tight">
+          AI Agent requested file download: 
+          <span class="text-tertiary font-medium bg-surface-container-high px-1 py-0.5 rounded border border-outline-variant">
+            report_2026.pdf
+          </span> 
+          from <span class="text-on-surface-variant">localhost:5173</span>
+</p>
+<!-- HITL Decision Action Buttons -->
+<div class="flex items-center gap-1.5 pt-1">
+<button class="flex-1 h-7 bg-tertiary-container text-on-tertiary font-code-sm text-code-sm font-semibold rounded hover:bg-tertiary transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="check">check</span>
+            Allow Once
+          </button>
+<button class="h-7 px-2.5 bg-surface-container-high border border-outline-variant hover:border-outline text-on-surface font-code-sm text-code-sm rounded transition-colors">
+            Always for Domain
+          </button>
+<button class="h-7 px-2 bg-error-container/40 border border-error/50 hover:bg-error-container text-error font-code-sm text-code-sm rounded transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[13px]" data-icon="close">close</span>
+            Deny
+          </button>
+</div>
+</section>
+<!-- SideNavBar CTA component logic (Interrupt Run) -->
+<div class="pt-1">
+<button class="w-full h-8 bg-surface-container-high hover:bg-surface-variant border border-outline-variant text-on-surface font-code-sm text-code-sm font-medium rounded flex items-center justify-center gap-2 transition-colors active:scale-[0.99]">
+<span class="material-symbols-outlined text-error text-[14px]" data-icon="stop_circle">stop_circle</span>
+          Interrupt Run
+          <span class="bg-surface-container-lowest text-on-surface-variant text-[10px] font-mono px-1 py-0.5 rounded border border-outline-variant">Esc</span>
+</button>
+</div>
+</main>
+<!-- 6. Shared Component: Footer -->
+<footer class="fixed bottom-0 left-0 w-full z-40 flex justify-between items-center px-space-md py-1 border-t border-outline-variant text-on-surface-variant bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 font-label-mono text-label-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>CDP v1.3 • Latency 14ms • Connected to Chrome Debugger via stdio MCP</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<a class="font-label-mono text-label-mono text-secondary hover:text-primary underline transition-opacity duration-150" href="#reindex">Re-index DOM</a>
+<span class="text-outline-variant text-[10px]">•</span>
+<a class="font-label-mono text-label-mono text-on-surface-variant hover:text-primary underline transition-opacity duration-150" href="#clear">Clear Traces</a>
+</div>
+</footer>
+</div>
+</body></html>

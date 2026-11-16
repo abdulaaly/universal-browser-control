@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, CheckCircle, ShieldAlert, XCircle } from 'lucide-react';
+import { Shield, ShieldAlert, Check, X, Globe } from 'lucide-react';
 
 export interface HitlItem {
   id: string;
@@ -20,61 +20,65 @@ export const HitlApprovalCards: React.FC<HitlApprovalCardsProps> = ({ requests, 
   if (requests.length === 0) return null;
 
   return (
-    <div className="space-y-3 mb-4">
-      <div className="flex items-center space-x-1.5 text-amber-400 font-semibold text-xs">
-        <AlertTriangle className="w-4 h-4" />
-        <span>Action Approval Required ({requests.length})</span>
-      </div>
-
+    <div className="space-y-2 mb-2">
       {requests.map((req) => (
-        <div
+        <section
           key={req.id}
-          className="bg-amber-950/40 border border-amber-600/50 rounded-xl p-3.5 shadow-lg animate-in fade-in duration-200"
+          className="bg-[#14120a] border border-[#f59e0b]/40 rounded-lg p-2.5 space-y-2 relative overflow-hidden animate-in fade-in duration-200"
         >
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <span className="text-xs font-mono font-bold text-amber-300 bg-amber-900/60 px-2 py-0.5 rounded border border-amber-700/60">
-                {req.tool}
-              </span>
-              {req.domain && (
-                <span className="ml-2 text-xs text-slate-300 font-medium">
-                  {req.domain}
-                </span>
-              )}
-            </div>
-            <ShieldAlert className="w-4 h-4 text-amber-400" />
+          {/* Subtle background shield outline */}
+          <div className="absolute -right-4 -bottom-4 opacity-5 pointer-events-none">
+            <Shield className="w-24 h-24 text-[#f59e0b]" />
           </div>
 
-          <p className="text-xs text-slate-200 mb-3 leading-relaxed">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <div className="w-5 h-5 rounded bg-[#f59e0b]/20 border border-[#f59e0b]/50 flex items-center justify-center text-[#f59e0b]">
+                <ShieldAlert className="w-3.5 h-3.5" />
+              </div>
+              <span className="font-mono text-[10px] text-[#f59e0b] font-bold tracking-wider uppercase">
+                SECURITY GUARDRAIL INTERRUPT
+              </span>
+            </div>
+            <span className="font-mono text-[9px] text-[#f59e0b] bg-[#f59e0b]/10 px-1.5 py-0.2 rounded border border-[#f59e0b]/30">
+              {req.tool}
+            </span>
+          </div>
+
+          {/* Description */}
+          <p className="font-mono text-xs text-[#e3e2e5] leading-relaxed">
             {req.description}
           </p>
 
-          <div className="grid grid-cols-3 gap-1.5">
+          {/* Action Buttons */}
+          <div className="flex items-center gap-1.5 pt-0.5">
             <button
               onClick={() => onDecision(req.id, 'allow_once')}
-              className="flex items-center justify-center space-x-1 px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition"
+              className="flex-1 h-7 bg-[#10b981] hover:bg-[#059669] text-black font-mono text-[11px] font-semibold rounded transition-colors flex items-center justify-center gap-1"
             >
-              <CheckCircle className="w-3.5 h-3.5" />
+              <Check className="w-3 h-3 stroke-[2.5]" />
               <span>Allow Once</span>
             </button>
 
             <button
               onClick={() => onDecision(req.id, 'allow_domain')}
-              className="flex items-center justify-center space-x-1 px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-medium border border-slate-700 transition truncate"
+              className="h-7 px-2.5 bg-[#14171f] border border-[#232834] hover:border-[#3b4354] text-[#e3e2e5] font-mono text-[11px] rounded transition-colors flex items-center gap-1"
               title="Whitelist domain for current session"
             >
-              <span>Trust Domain</span>
+              <Globe className="w-3 h-3 text-[#7a8296]" />
+              <span>Always for Domain</span>
             </button>
 
             <button
               onClick={() => onDecision(req.id, 'deny')}
-              className="flex items-center justify-center space-x-1 px-2.5 py-1.5 rounded-lg bg-rose-900/80 hover:bg-rose-800 text-rose-200 text-xs font-medium border border-rose-700 transition"
+              className="h-7 px-2.5 bg-[#f43f5e]/20 border border-[#f43f5e]/40 hover:bg-[#f43f5e]/30 text-[#f43f5e] font-mono text-[11px] rounded transition-colors flex items-center gap-1"
             >
-              <XCircle className="w-3.5 h-3.5" />
+              <X className="w-3 h-3" />
               <span>Deny</span>
             </button>
           </div>
-        </div>
+        </section>
       ))}
     </div>
   );
