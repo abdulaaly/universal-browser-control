@@ -2,10 +2,17 @@
 ### Open-Source Autonomous AI Browser Extension + Universal MCP Server & CLI Hub
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![Manifest V3](https://img.shields.io/badge/Chrome_Extension-Manifest_V3-blue.svg)](packages/extension)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-abdulaaly%2Funiversal--browser--control-181717.svg?logo=github)](https://github.com/abdulaaly/universal-browser-control)
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Production%20Live-black.svg?logo=vercel)](https://universal-browser-control-m74buxuk9-abdulaalys-projects.vercel.app)
+[![Manifest V3](https://img.shields.io/badge/Chrome_Extension-Manifest_V3-blue.svg)](chrome-extension)
 [![Model Context Protocol](https://img.shields.io/badge/MCP-2024--11--05-purple.svg)](packages/mcp-server)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4-blue.svg)](tsconfig.base.json)
 [![Author](https://img.shields.io/badge/Contact-100xdigitizer%40gmail.com-black.svg)](mailto:100xdigitizer@gmail.com)
+
+**Live Production Web Portal & Cloud Relay:**  
+👉 **[https://universal-browser-control-m74buxuk9-abdulaalys-projects.vercel.app](https://universal-browser-control-m74buxuk9-abdulaalys-projects.vercel.app)**
+
+**Public GitHub Repository:**  
+👉 **[https://github.com/abdulaaly/universal-browser-control](https://github.com/abdulaaly/universal-browser-control)**
 
 **Universal AI Browser Control** is a 100% open-source, vendor-agnostic browser automation system engineered to surpass closed proprietary extensions (such as the ChatGPT Chrome Extension `hehggadaopoacecdllhhajmbjkdcmajg`). 
 
