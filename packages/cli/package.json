@@ -1,0 +1,29 @@
+{
+  "name": "@universal-browser/cli",
+  "version": "1.0.0",
+  "description": "Zero-config CLI bridge and control hub for Universal AI Browser Control",
+  "main": "dist/index.js",
+  "bin": {
+    "universal-browser": "./dist/index.js",
+    "ub-cli": "./dist/index.js"
+  },
+  "author": "100xdigitizer@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "dev": "tsc -w"
+  },
+  "dependencies": {
+    "@universal-browser/mcp-server": "^1.0.0",
+    "chalk": "^4.1.2",
+    "commander": "^12.1.0",
+    "ora": "^5.4.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "typescript": "^5.4.5"
+  }
+}

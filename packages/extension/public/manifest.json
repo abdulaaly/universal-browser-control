@@ -1,0 +1,56 @@
+{
+  "manifest_version": 3,
+  "name": "Universal AI Browser Control",
+  "version": "1.0.0",
+  "description": "Universal AI Browser Control Extension + Remote/Local MCP Server & CLI (100xdigitizer@gmail.com)",
+  "author": "100xdigitizer@gmail.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Universal AI Browser Control",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "alarms",
+    "debugger",
+    "downloads",
+    "history",
+    "scripting",
+    "sidePanel",
+    "storage",
+    "tabGroups",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-scripts/dom-indexer.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-scripts/agent-cursor.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
