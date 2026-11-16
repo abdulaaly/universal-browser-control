@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal AI Browser Control — Cloud Relay & MCP Hub</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background-color: #030712; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .glow-box { box-shadow: 0 0 30px rgba(16, 185, 129, 0.15); }
+    .quantum-border { border: 1px solid rgba(16, 185, 129, 0.3); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-emerald-500 selection:text-black">
+
+  <!-- Navigation -->
+  <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <svg viewBox="0 0 512 512" class="w-9 h-9">
+          <rect x="20" y="20" width="472" height="472" rx="96" fill="#0a0f1d" stroke="#1e293b" stroke-width="12" />
+          <ellipse cx="256" cy="300" rx="140" ry="55" fill="none" stroke="#06b6d4" stroke-width="10" opacity="0.8" />
+          <circle cx="256" cy="300" r="70" fill="#10b981" stroke="#6ee7b7" stroke-width="10" />
+          <circle cx="256" cy="300" r="28" fill="#ffffff" />
+        </svg>
+        <div>
+          <span class="font-bold text-base text-slate-100 tracking-tight">Universal AI Browser</span>
+          <span class="text-xs px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 ml-1.5 font-mono">PRO</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3 text-xs">
+        <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-slate-900 border border-slate-800 text-emerald-400 font-mono">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse mr-2"></span>
+          Cloud Relay: Active
+        </span>
+        <a href="https://github.com/abdulaaly/universal-browser-control" target="_blank" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition flex items-center space-x-1.5">
+          <span>GitHub Repo</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main class="flex-1 max-w-5xl mx-auto px-4 py-12 w-full space-y-12">
+    <div class="text-center space-y-4">
+      <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/80 text-emerald-400 text-xs font-medium">
+        <span>⚡ 100% Open-Source Autonomous AI Browser Control</span>
+      </div>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
+        Control Your Live Browser from <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Any AI Client</span>
+      </h1>
+      <p class="text-slate-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
+        Engineered to surpass vendor-locked extensions. Control your desktop Chrome session safely from 
+        <strong>Gemini</strong>, <strong>Claude (Web/Mobile/Desktop)</strong>, <strong>Perplexity</strong>, <strong>Cursor</strong>, or <strong>Antigravity CLI</strong> via Model Context Protocol (MCP).
+      </p>
+    </div>
+
+    <!-- Live Connect Hub Card -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 glow-box max-w-3xl mx-auto">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
+        <div>
+          <h2 class="text-lg font-bold text-slate-100">Live Remote MCP Endpoint</h2>
+          <p class="text-xs text-slate-400">Connect cloud AI agents to your local browser session</p>
+        </div>
+        <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950 border border-emerald-800 text-emerald-400 font-medium">
+          2FA & HITL Protected
+        </span>
+      </div>
+
+      <div class="space-y-4 text-xs font-mono">
+        <div>
+          <label class="text-slate-400 block mb-1">Server-Sent Events (SSE) Stream URL:</label>
+          <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-2.5">
+            <span class="text-emerald-300 flex-1 truncate" id="streamUrl">https://universal-browser-control.vercel.app/api/mcp/sse</span>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('streamUrl').innerText); alert('Copied SSE URL!')" class="text-slate-400 hover:text-white px-2 py-1 bg-slate-800 rounded">
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-slate-400">Scoped Personal Access Token (PAT):</label>
+            <button onclick="rotateToken()" class="text-emerald-400 hover:underline">Rotate Token</button>
+          </div>
+          <div class="flex items-center bg-slate-950 border border-slate-800 rounded-lg p-2.5">
+            <span class="text-slate-300 flex-1 truncate" id="patToken">ub_pat_live_89f0a8c2b7d41e9e03</span>
+            <button onclick="navigator.clipboard.writeText(document.getElementById('patToken').innerText); alert('Copied Token!')" class="text-slate-400 hover:text-white px-2 py-1 bg-slate-800 rounded">
+              Copy
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-Client Presets Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
+        <h3 class="text-sm font-bold text-emerald-400">Google Gemini Configuration</h3>
+        <pre class="bg-slate-950 border border-slate-800 p-3 rounded text-[11px] font-mono text-slate-300 overflow-x-auto">{
+  "mcpServers": {
+    "universal-browser": {
+      "url": "https://universal-browser-control.vercel.app/api/mcp/sse",
+      "headers": {
+        "Authorization": "Bearer <YOUR_PAT_TOKEN>"
+      }
+    }
+  }
+}</pre>
+      </div>
+
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-4 space-y-2">
+        <h3 class="text-sm font-bold text-cyan-400">Anthropic Claude Web / Mobile</h3>
+        <pre class="bg-slate-950 border border-slate-800 p-3 rounded text-[11px] font-mono text-slate-300 overflow-x-auto">URL: https://universal-browser-control.vercel.app/api/mcp/sse
+Header: Authorization: Bearer <YOUR_PAT_TOKEN>
+
+# Or for Claude Desktop local stdio:
+npx -y @universal-browser/mcp-server</pre>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
+    Universal AI Browser Control • Open Source MIT • 100xdigitizer@gmail.com • <a href="https://github.com/abdulaaly/universal-browser-control" class="text-emerald-400 hover:underline">GitHub</a>
+  </footer>
+
+  <script>
+    function rotateToken() {
+      const bytes = new Uint8Array(12);
+      crypto.getRandomValues(bytes);
+      const token = 'ub_pat_live_' + Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+      document.getElementById('patToken').innerText = token;
+    }
+  </script>
+</body>
+</html>

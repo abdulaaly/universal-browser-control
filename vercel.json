@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "name": "universal-browser-control",
+  "builds": [
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "public/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/mcp/sse",
+      "dest": "/api/sse.js"
+    },
+    {
+      "src": "/api/mcp/messages",
+      "dest": "/api/messages.js"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/$1"
+    }
+  ]
+}
