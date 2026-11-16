@@ -1,0 +1,90 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Universal AI Browser Control API",
+    "description": "Control live desktop Chrome browser sessions safely via Cloud Relay (ChatGPT Actions & Custom GPTs compatible).",
+    "version": "1.0.0",
+    "contact": {
+      "email": "100xdigitizer@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://universal-browser-control.vercel.app"
+    }
+  ],
+  "paths": {
+    "/api/action": {
+      "post": {
+        "operationId": "executeBrowserAction",
+        "summary": "Dispatch autonomous browser automation actions",
+        "description": "Executes CDP automation commands (DOM indexing, clicking, typing, tab navigation, screenshots) on the user's connected desktop browser session.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string",
+                    "enum": [
+                      "get_dom_tree",
+                      "click_element",
+                      "type_text",
+                      "navigate",
+                      "capture_screenshot",
+                      "list_tabs",
+                      "scroll"
+                    ],
+                    "description": "The browser automation action to execute"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "index": { "type": "number", "description": "Numeric target element index from get_dom_tree" },
+                      "text": { "type": "string", "description": "Text to type into active or indexed input" },
+                      "url": { "type": "string", "description": "URL to navigate existing or new tab to" },
+                      "tabId": { "type": "number", "description": "Browser tab ID" }
+                    }
+                  }
+                },
+                "required": ["action"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action executed and relayed to live browser session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "status": { "type": "string" },
+                    "action": { "type": "string" },
+                    "data": { "type": "object" },
+                    "timestamp": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "operationId": "checkHealth",
+        "summary": "Check Cloud Relay & MCP Server status",
+        "responses": {
+          "200": {
+            "description": "Service online and ready"
+          }
+        }
+      }
+    }
+  }
+}
